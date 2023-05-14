@@ -38,7 +38,6 @@ fn establish_connection() -> Result<Connection, rusqlite::Error> {
 
 pub(crate) fn add_user(user: &str, password: &str) -> Result<(), rusqlite::Error> {
     let hash = hash_str(password);
-    println!("Hash: {}", hash);
     let connection = establish_connection()?;
     connection.execute(
         "INSERT INTO credentials (user, password_hash) VALUES (?1, ?2)",
