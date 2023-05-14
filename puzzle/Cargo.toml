@@ -1,0 +1,9 @@
+[package]
+name = "puzzle"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+iced = "0.9.0"
+rusqlite = { version = "0.29.0", features = ["bundled-sqlcipher"] }
+sha2 = "0.10.0"
