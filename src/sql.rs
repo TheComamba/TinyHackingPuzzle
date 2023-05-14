@@ -14,8 +14,17 @@ fn hash_str(str: &str) -> String {
     hash_str
 }
 
+fn set_key(connection: &Connection) -> Result<(), rusqlite::Error> {
+    let mut set_key = connection.prepare("PRAGMA KEY = 'o6zVMlM7kmsKmt4uphuF4ypKz7Yzcmxq'")?;
+    let _ = set_key.query(())?;
+    let mut test_key = connection.prepare("SELECT count(*) FROM sqlite_master;")?;
+    let _ = test_key.query(())?;
+    Ok(())
+}
+
 fn establish_connection() -> Result<Connection, rusqlite::Error> {
     let connection = Connection::open("database.db")?;
+    set_key(&connection)?;
     connection.execute(
         "CREATE TABLE IF NOT EXISTS credentials (
         user TEXT NOT NULL PRIMARY KEY,
