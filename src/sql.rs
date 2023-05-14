@@ -39,20 +39,21 @@ fn establish_connection() -> Result<Connection, rusqlite::Error> {
 pub(crate) fn add_user(user: &str, password: &str) -> Result<(), rusqlite::Error> {
     let hash = hash_str(password);
     let connection = establish_connection()?;
-    connection.execute(
-        "INSERT INTO credentials (user, password_hash) VALUES (?1, ?2)",
-        (user, hash),
-    )?;
+    let vulnerable_command = format!(
+        "INSERT INTO credentials (user, password_hash) VALUES ('{}', '{}')",
+        user, hash
+    );
+    connection.execute(&vulnerable_command, ())?;
     Ok(())
 }
 
 pub(crate) fn check_user(user: &str, password: &str) -> Result<bool, rusqlite::Error> {
     let connection = establish_connection()?;
-    let stored_hash: String = connection.query_row(
-        "SELECT password_hash FROM credentials WHERE user = ?1",
-        [user],
-        |row| row.get(0),
-    )?;
+    let vulnerable_command = format!(
+        "SELECT password_hash FROM credentials WHERE user = '{}'",
+        user
+    );
+    let stored_hash: String = connection.query_row(&vulnerable_command, (), |row| row.get(0))?;
 
     Ok(stored_hash == hash_str(password))
 }
