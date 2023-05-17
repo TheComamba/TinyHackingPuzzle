@@ -100,7 +100,7 @@ impl Gui {
     fn search_for_users(&mut self) {
         match search_for_users(&self.user) {
             Ok(users) => {
-                self.message = format!("The following users matchet your query: {:?}", users)
+                self.message = format!("The following users match your query: {:?}", users)
             }
             Err(e) => self.message = format!("Error: {}", e),
         }
