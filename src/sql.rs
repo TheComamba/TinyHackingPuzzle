@@ -64,16 +64,11 @@ pub(crate) fn search_for_users(user: &str) -> Result<Vec<String>, rusqlite::Erro
     "SELECT user FROM credentials WHERE user LIKE '%{}%'",
     user
         };
-    let mut users = Vec::<String>::new();
-    let mut idx = 0;
-    loop {
-        let user = connection.query_row(&vulnerable_command, (), |row| row.get(idx));
-        if let Ok(user) = user {
-            users.push(user);
-        } else {
-            break;
-        }
-        idx += 1;
+    let mut statement = connection.prepare(&vulnerable_command)?;
+    let usermap = statement.query_map((), |row| row.get(0))?;
+    let mut users = vec![];
+    for user in usermap.into_iter() {
+        users.push(user?);
     }
     Ok(users)
 }
