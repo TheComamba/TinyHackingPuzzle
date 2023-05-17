@@ -1,7 +1,7 @@
 use iced::widget::{Button, Column, Text, TextInput};
 use iced::{Element, Sandbox};
 
-use crate::sql::check_user;
+use crate::sql::{check_user, search_for_users};
 
 pub(crate) struct Gui {
     user: String,
@@ -30,6 +30,7 @@ impl Sandbox for Gui {
             GuiMessage::PasswordInput(password) => self.set_password_input(password),
             GuiMessage::Login => self.validate_login(),
             GuiMessage::AddUser => self.add_user(),
+            GuiMessage::SearchForUser => self.search_for_users(),
         }
     }
 
@@ -53,6 +54,7 @@ impl Sandbox for Gui {
             )
             .push(Button::new(Text::new("Login")).on_press(GuiMessage::Login))
             .push(Button::new(Text::new("Add user")).on_press(GuiMessage::AddUser))
+            .push(Button::new(Text::new("Search for users")).on_press(GuiMessage::SearchForUser))
             .push(Text::new(&self.message))
             .padding(30)
             .spacing(15)
@@ -94,6 +96,15 @@ impl Gui {
             }
         }
     }
+
+    fn search_for_users(&mut self) {
+        match search_for_users(&self.user) {
+            Ok(users) => {
+                self.message = format!("The following users matchet your query: {:?}", users)
+            }
+            Err(e) => self.message = format!("Error: {}", e),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -102,4 +113,5 @@ pub(crate) enum GuiMessage {
     PasswordInput(String),
     Login,
     AddUser,
+    SearchForUser,
 }
