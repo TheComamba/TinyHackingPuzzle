@@ -39,6 +39,7 @@ impl Sandbox for Gui {
             .push(
                 TextInput::new("", &self.user)
                     .on_input(GuiMessage::UserInput)
+                    .on_submit(GuiMessage::Login)
                     .padding(10)
                     .size(20),
             )
@@ -46,6 +47,7 @@ impl Sandbox for Gui {
             .push(
                 TextInput::new("", &self.password)
                     .on_input(GuiMessage::PasswordInput)
+                    .on_submit(GuiMessage::Login)
                     .padding(10)
                     .size(20),
             )
