@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'tiny_hacking_puzzle'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=tiny_hacking_puzzle",
+                    "--package=tiny_hacking_puzzle"
+                ],
+                "filter": {
+                    "name": "tiny_hacking_puzzle",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
