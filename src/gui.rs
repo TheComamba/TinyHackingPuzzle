@@ -31,6 +31,7 @@ impl Sandbox for Gui {
             GuiMessage::Login => self.validate_login(),
             GuiMessage::AddUser => self.add_user(),
             GuiMessage::SearchForUser => self.search_for_users(),
+            GuiMessage::UpdateMessageBox(_) => (),
         }
     }
 
@@ -55,7 +56,10 @@ impl Sandbox for Gui {
             .push(Button::new(Text::new("Search for users")).on_press(GuiMessage::SearchForUser))
             .push(Button::new(Text::new("Add user")).on_press(GuiMessage::AddUser))
             .push(Button::new(Text::new("Login")).on_press(GuiMessage::Login))
-            .push(Text::new(&self.message))
+            .push(
+                TextInput::new("Output Message", &self.message)
+                    .on_input(GuiMessage::UpdateMessageBox),
+            )
             .padding(30)
             .spacing(15)
             .into()
@@ -114,4 +118,5 @@ pub(crate) enum GuiMessage {
     Login,
     AddUser,
     SearchForUser,
+    UpdateMessageBox(String),
 }
