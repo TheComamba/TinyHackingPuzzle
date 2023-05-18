@@ -60,10 +60,7 @@ pub(crate) fn check_user(user: &str, password: &str) -> Result<bool, rusqlite::E
 
 pub(crate) fn search_for_users(user: &str) -> Result<Vec<String>, rusqlite::Error> {
     let connection = establish_connection()?;
-    let vulnerable_command = format! {
-    "SELECT user FROM credentials WHERE user LIKE '%{}%'",
-    user
-        };
+    let vulnerable_command = format!("SELECT user FROM credentials WHERE user LIKE '%{}%'", user);
     let mut statement = connection.prepare(&vulnerable_command)?;
     let usermap = statement.query_map((), |row| row.get(0))?;
     let mut users = vec![];

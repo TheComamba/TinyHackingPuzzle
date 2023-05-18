@@ -38,23 +38,23 @@ impl Sandbox for Gui {
         Column::new()
             .push(Text::new("User:"))
             .push(
-                TextInput::new("", &self.user)
+                TextInput::new("Push enter to search for users.", &self.user)
                     .on_input(GuiMessage::UserInput)
-                    .on_submit(GuiMessage::Login)
+                    .on_submit(GuiMessage::SearchForUser)
                     .padding(10)
                     .size(20),
             )
             .push(Text::new("Password:"))
             .push(
-                TextInput::new("", &self.password)
+                TextInput::new("Push enter to login.", &self.password)
                     .on_input(GuiMessage::PasswordInput)
                     .on_submit(GuiMessage::Login)
                     .padding(10)
                     .size(20),
             )
-            .push(Button::new(Text::new("Login")).on_press(GuiMessage::Login))
-            .push(Button::new(Text::new("Add user")).on_press(GuiMessage::AddUser))
             .push(Button::new(Text::new("Search for users")).on_press(GuiMessage::SearchForUser))
+            .push(Button::new(Text::new("Add user")).on_press(GuiMessage::AddUser))
+            .push(Button::new(Text::new("Login")).on_press(GuiMessage::Login))
             .push(Text::new(&self.message))
             .padding(30)
             .spacing(15)
