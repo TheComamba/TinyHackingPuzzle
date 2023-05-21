@@ -70,8 +70,8 @@ impl Gui {
     fn set_password_input(&mut self, pw: String) {
         if pw.chars().any(|c| !c.is_digit(10)) {
             self.message = String::from("Password must only contain digits");
-        } else if pw.len() > 5 {
-            self.message = String::from("Password can be at most 5 characters long");
+        } else if pw.len() > 8 {
+            self.message = String::from("Password can be at most 8 characters long");
         } else {
             self.message = String::new();
             self.password = pw;
