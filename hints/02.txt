@@ -1,0 +1,2 @@
+Most SQL queries are of the form
+SELECT [column name] FROM [table name] WHERE [some condition]
