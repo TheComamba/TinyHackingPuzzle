@@ -1,4 +1,0 @@
-Step 1:
-Action: Type a single quote ' in the users field.
-Result: Error: unrecognized token: "'"
-Interpretation: This input field is susceptible to SQL injection!
