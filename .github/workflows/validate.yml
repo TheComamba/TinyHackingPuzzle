@@ -15,7 +15,7 @@ jobs:
                 os: [ubuntu-latest, windows-latest]
                 include:
                     - os: ubuntu-latest
-                      openssl: /usr/lib/x86_64-linux-gnu/
+                      openssl: /usr/
                     - os: windows-latest
                       openssl: C:\Program Files\OpenSSL\
         runs-on: ${{ matrix.os }}
