@@ -5,6 +5,10 @@ on:
     schedule:
         - cron: '0 0 1 * *' # Run on the first day of every month
 
+env:
+    RUST_BACKTRACE: full
+    OPENSSL_DIR: C:\Program Files\OpenSSL\
+
 jobs:
     build:
         strategy:
@@ -16,9 +20,7 @@ jobs:
 
             - name: Install OpenSSL on Windows
               if: matrix.os == 'windows-latest'
-              run: |
-                choco install openssl
-                set OPENSSL_DIR="C:\Program Files\OpenSSL\"
+              run: choco install openssl
 
             - run: cargo build --release
 
