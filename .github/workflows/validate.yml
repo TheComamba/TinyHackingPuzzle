@@ -13,12 +13,13 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest]
+                include:
+                    - os: windows-latest
+                      openssl: C:\Program Files\OpenSSL\
         runs-on: ${{ matrix.os }}
-        
+
         env:
-            RUST_BACKTRACE: 1
-            OPENSSL_DIR: C:\Program Files\OpenSSL\
-            if: matrix.os == 'windows-latest'
+            OPENSSL_DIR: ${{ matrix.openssl }}
 
         steps:
             - uses: actions/checkout@v3
