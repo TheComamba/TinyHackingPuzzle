@@ -22,7 +22,7 @@ jobs:
             # OPENSSL_DIR: ${{ matrix.openssl }}
 
         steps:
-            - run: echo $OPENSSL_DIR
+            - run: echo $OPENSSL_DIR >> $GITHUB_OUTPUT
               if: matrix.os == 'ubuntu-latest'
 
             - uses: actions/checkout@v3
