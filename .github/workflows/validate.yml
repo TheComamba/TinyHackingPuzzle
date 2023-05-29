@@ -50,11 +50,11 @@ jobs:
                 os: [ubuntu-latest, windows-latest]
         runs-on: ${{ matrix.os }}
         steps:
-            - name: Install GUI dependencies Linux
+            - name: Install GUI dependencies on Linux
               if: matrix.os == 'ubuntu-latest'
               run: |
                     sudo apt-get update
-                    sudo apt-get install -y libgtk-3-dev
+                    sudo apt-get install -y libgtk-3-dev xorg xwayland
 
             - name: Download Artifacts
               uses: actions/download-artifact@v3
