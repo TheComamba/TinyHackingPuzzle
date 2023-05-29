@@ -32,11 +32,16 @@ jobs:
 
             - run: cargo build --release
 
+            - name: Collect Artifacts
+              run: |
+                mkdir artifacts
+                cp target/release/tiny_hacking_puzzle* artifacts
+
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
               with:
                   name: ${{ matrix.os }}-release
-                  path: target/release
+                  path: artifacts
 
     runExecutable:
         needs: build
@@ -58,17 +63,20 @@ jobs:
               with:
                   name: ${{ matrix.os }}-release
 
+            - name: Display file structure
+              run: ls -R
+
             - name: Run executable on Linux
               if: matrix.os == 'ubuntu-latest'
               run: |
-                chmod +x target/release/tiny_hacking_puzzle
-                ./target/release/tiny_hacking_puzzle &
+                chmod +x artifacts/tiny_hacking_puzzle
+                ./artifacts/tiny_hacking_puzzle &
                 sleep 5
                 killall $!
 
             - name: Run executable on Windows
               if: matrix.os == 'windows-latest'
               run: |
-                .\target\release\tiny_hacking_puzzle.exe &
+                .\artifacts\tiny_hacking_puzzle.exe &
                 sleep 5
                 taskkill /IM tiny_hacking_puzzle.exe /F
