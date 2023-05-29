@@ -50,8 +50,6 @@ jobs:
                 os: [ubuntu-latest, windows-latest]
         runs-on: ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v3
-
             - name: Install GUI dependencies Linux
               if: matrix.os == 'ubuntu-latest'
               run: |
@@ -69,14 +67,14 @@ jobs:
             - name: Run executable on Linux
               if: matrix.os == 'ubuntu-latest'
               run: |
-                chmod +x artifacts/tiny_hacking_puzzle
-                ./artifacts/tiny_hacking_puzzle &
+                chmod +x tiny_hacking_puzzle
+                ./tiny_hacking_puzzle &
                 sleep 5
                 killall $!
 
             - name: Run executable on Windows
               if: matrix.os == 'windows-latest'
               run: |
-                .\artifacts\tiny_hacking_puzzle.exe &
+                .\tiny_hacking_puzzle.exe &
                 sleep 5
                 taskkill /IM tiny_hacking_puzzle.exe /F
