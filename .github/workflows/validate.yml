@@ -18,10 +18,13 @@ jobs:
                       openssl: C:\Program Files\OpenSSL\
         runs-on: ${{ matrix.os }}
 
-        env:
-            OPENSSL_DIR: ${{ matrix.openssl }}
+        # env:
+            # OPENSSL_DIR: ${{ matrix.openssl }}
 
         steps:
+            - run: echo $OPENSSL_DIR
+              if: matrix.os == 'ubuntu-latest'
+
             - uses: actions/checkout@v3
 
             - name: Install OpenSSL on Windows
