@@ -1,0 +1,58 @@
+name: Validate build and executable
+
+on:
+    push:
+    schedule:
+        - cron: '0 0 1 * *' # Run on the first day of every month
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v2
+
+            - run: cargo build --release
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ${{ matrix.os }}-release
+                  path: target/release
+
+    runExecutable:
+        needs: build
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Install GUI dependencies Linux
+              if: matrix.os == 'ubuntu-latest'
+              run: |
+                    sudo apt-get update
+                    sudo apt-get install -y libgtk-3-dev
+
+            - name: Download Artifacts
+              uses: actions/download-artifact@v2
+              with:
+                  name: ${{ matrix.os }}-release
+
+            - name: Run executable on Linux
+              if: matrix.os == 'ubuntu-latest'
+              run: |
+                chmod +x target/release/tiny_hacking_puzzle
+                ./target/release/tiny_hacking_puzzle &
+                sleep 5
+                killall $!
+
+            - name: Run executable on Windows
+              if: matrix.os == 'windows-latest'
+              run: |
+                .\target\release\tiny_hacking_puzzle.exe &
+                sleep 5
+                taskkill /IM tiny_hacking_puzzle.exe /F
