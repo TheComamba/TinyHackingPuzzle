@@ -22,7 +22,7 @@ jobs:
             # OPENSSL_DIR: ${{ matrix.openssl }}
 
         steps:
-            - run: sudo find /usr/lib/ -name libssl.so
+            - run: find /usr/lib/ -name libssl.so
               if: matrix.os == 'ubuntu-latest'
 
             - uses: actions/checkout@v3
