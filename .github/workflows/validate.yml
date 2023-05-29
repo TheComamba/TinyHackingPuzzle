@@ -17,8 +17,8 @@ jobs:
             - name: Install OpenSSL on Windows
               if: matrix.os == 'windows-latest'
               run: |
-                choco install openssl.light
-                set OPENSSL_DIR=C:\Program Files\OpenSSL-Win64
+                choco install openssl
+                set OPENSSL_DIR="C:\Program Files\OpenSSL\"
 
             - run: cargo build --release
 
