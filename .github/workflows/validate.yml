@@ -28,19 +28,29 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            - name: Install rust
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                apt-get update
-                apt-get install -y rustc cargo build-essential cmake pkg-config fontconfig
-                ls -l /usr/bin/c*
-                export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-
             - name: Install OpenSSL on Windows
               if: matrix.os == 'windows-latest'
               run: choco install openssl
 
-            - run: cargo build --release
+            - uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+
+            - uses: actions-rs/cargo@v1
+              with:
+                  command: build
+                  args: --release
+
+            # - name: Install rust
+            #   if: matrix.os == 'ubuntu-latest'
+            #   run: |
+            #     apt-get update
+            #     apt-get install -y rustc cargo build-essential cmake pkg-config fontconfig
+            #     ls -l /usr/bin/c*
+            #     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
+
+            # - run: cargo build --release
 
             - name: Collect Artifacts
               run: |
