@@ -32,7 +32,7 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: |
                 apt-get update
-                apt-get install -y rustc cargo
+                apt-get install -y rustc cargo cmake
 
             - name: Install OpenSSL on Windows
               if: matrix.os == 'windows-latest'
