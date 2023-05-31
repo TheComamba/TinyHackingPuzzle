@@ -32,8 +32,7 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: |
                 apt-get update
-                apt-get install -y curl
-                curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+                apt-get install -y rustc cargo
 
             - name: Install OpenSSL on Windows
               if: matrix.os == 'windows-latest'
