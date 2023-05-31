@@ -32,7 +32,7 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: |
                 apt-get update
-                apt-get install -y rustc cargo build-essential cmake pkg-config
+                apt-get install -y rustc cargo build-essential cmake pkg-config fontconfig
                 ls -l /usr/bin/c*
 
             - name: Install OpenSSL on Windows
