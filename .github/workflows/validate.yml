@@ -31,8 +31,8 @@ jobs:
             - name: Install rust
               if: matrix.os == 'ubuntu-latest'
               run: |
-                sudo apt-get update
-                sudo apt-get install -y curl
+                apt-get update
+                apt-get install -y curl
                 curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
 
             - name: Install OpenSSL on Windows
