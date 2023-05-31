@@ -16,9 +16,11 @@ jobs:
                 include:
                     - os: ubuntu-latest
                       openssl: /usr/
+                      container: ubuntu:18.04 # Using an older version of Glibc
                     - os: windows-latest
                       openssl: C:\Program Files\OpenSSL\
         runs-on: ${{ matrix.os }}
+        container: ${{ matrix.container }}
 
         env:
             OPENSSL_DIR: ${{ matrix.openssl }}
