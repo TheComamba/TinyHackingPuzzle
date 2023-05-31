@@ -54,7 +54,7 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: |
                     sudo apt-get update
-                    sudo apt-get install -y libgtk-3-dev xorg xwayland
+                    sudo apt-get install -y libgtk-3-dev libxkbcommon-dev
 
             - name: Download Artifacts
               uses: actions/download-artifact@v3
