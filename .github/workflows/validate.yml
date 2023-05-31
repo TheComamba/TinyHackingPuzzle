@@ -34,7 +34,9 @@ jobs:
 
             - name: Install curl on Linux
               if : matrix.os == 'ubuntu-latest'
-              run: apt-get install curl
+              run: |
+                apt-get update
+                apt-get install curl
 
             - uses: actions-rs/toolchain@v1
               with:
