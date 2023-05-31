@@ -36,7 +36,7 @@ jobs:
               if : matrix.os == 'ubuntu-latest'
               run: |
                 apt-get update
-                apt-get install -y curl
+                apt-get install -y curl build-essential
 
             - uses: actions-rs/toolchain@v1
               with:
