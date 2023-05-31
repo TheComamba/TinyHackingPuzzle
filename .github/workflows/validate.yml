@@ -55,13 +55,6 @@ jobs:
         runs-on: ${{ matrix.os }}
         container: ${{ matrix.container }}
         steps:
-            # - name: Install GUI dependencies on Linux
-            #   if: matrix.os == 'ubuntu-latest'
-            #   run: |
-            #         export DEBIAN_FRONTED=noninteractive
-            #         sudo apt-get update
-            #         sudo apt-get install -y libgtk-3-dev libxkbcommon-dev
-
             - name: Download Artifacts
               uses: actions/download-artifact@v3
               with:
