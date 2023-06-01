@@ -92,6 +92,7 @@ jobs:
             - name: Run executable on Linux
               if: matrix.os == 'ubuntu-latest'
               run: |
+                export XDG_RUNTIME_DIR=/run/user/$(id -u)
                 chmod +x tiny_hacking_puzzle
                 ./tiny_hacking_puzzle &
                 sleep 5
