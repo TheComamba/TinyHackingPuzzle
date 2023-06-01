@@ -74,20 +74,12 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest]
-                include:
-                    - os: ubuntu-latest
-                      container: sabotagecla6/ubuntu-ui:latest
-                    - os: windows-latest
         runs-on: ${{ matrix.os }}
-        container: ${{ matrix.container }}
         steps:
             - name: Download Artifacts
               uses: actions/download-artifact@v3
               with:
                   name: ${{ matrix.os }}-release
-
-            - name: Display file structure
-              run: ls -R
 
             - name: Run executable on Linux
               if: matrix.os == 'ubuntu-latest'
