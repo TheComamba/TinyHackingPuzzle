@@ -6,7 +6,7 @@ on:
         - cron: '0 0 1 * *' # Run on the first day of every month
 
 env:
-    RUST_BACKTRACE: 1
+    RUST_BACKTRACE: full
 
 jobs:
     build:
@@ -48,16 +48,6 @@ jobs:
                   command: build
                   args: --release
 
-            # - name: Install rust
-            #   if: matrix.os == 'ubuntu-latest'
-            #   run: |
-            #     apt-get update
-            #     apt-get install -y rustc cargo build-essential cmake pkg-config fontconfig
-            #     ls -l /usr/bin/c*
-            #     export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
-
-            # - run: cargo build --release
-
             - name: Collect Artifacts
               run: |
                 mkdir artifacts
@@ -85,7 +75,7 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
               run: |
                 chmod +x tiny_hacking_puzzle
-                xvfb-run -a -s "-screen 0 1024x768x24" ./tiny_hacking_puzzle &
+                xvfb-run -a ./tiny_hacking_puzzle &
                 sleep 5
                 killall $!
 
