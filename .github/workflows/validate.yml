@@ -94,7 +94,7 @@ jobs:
               run: |
                 export XDG_RUNTIME_DIR=/run/user/$(id -u)
                 chmod +x tiny_hacking_puzzle
-                ./tiny_hacking_puzzle &
+                xinit ./tiny_hacking_puzzle -- :1 &
                 sleep 5
                 killall $!
 
