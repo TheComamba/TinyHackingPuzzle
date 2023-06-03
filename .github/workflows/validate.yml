@@ -1,0 +1,87 @@
+name: Validate build and executable
+
+on:
+    push:
+    schedule:
+        - cron: '0 0 1 * *' # Run on the first day of every month
+
+env:
+    RUST_BACKTRACE: full
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                include:
+                    - os: ubuntu-latest
+                      openssl: /usr/
+                      container: ubuntu:18.04 # Linking against an older version of Glibc
+                    - os: windows-latest
+                      openssl: C:\Program Files\OpenSSL\
+        runs-on: ${{ matrix.os }}
+        container: ${{ matrix.container }}
+
+        env:
+            OPENSSL_DIR: ${{ matrix.openssl }}
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Install OpenSSL on Windows
+              if: matrix.os == 'windows-latest'
+              run: choco install openssl
+
+            - name: Install build dependencies on Linux
+              if : matrix.os == 'ubuntu-latest'
+              run: |
+                apt-get update
+                apt-get install -y curl build-essential cmake pkg-config libfontconfig1-dev
+
+            - uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+
+            - uses: actions-rs/cargo@v1
+              with:
+                  command: build
+                  args: --release
+
+            - name: Collect Artifacts
+              run: |
+                mkdir artifacts
+                cp target/release/tiny_hacking_puzzle* artifacts
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: ${{ matrix.os }}-release
+                  path: artifacts
+
+    runExecutable:
+        needs: build
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - name: Download Artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: ${{ matrix.os }}-release
+
+            - name: Run executable on Linux (Not yet supported by iced)
+              if: matrix.os == 'ubuntu-latest' && false
+              run: |
+                chmod +x tiny_hacking_puzzle
+                xvfb-run -a ./tiny_hacking_puzzle &
+                sleep 5
+                killall $!
+
+            - name: Run executable on Windows
+              if: matrix.os == 'windows-latest'
+              run: |
+                .\tiny_hacking_puzzle.exe &
+                sleep 5
+                taskkill /IM tiny_hacking_puzzle.exe /F
