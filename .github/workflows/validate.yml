@@ -71,8 +71,8 @@ jobs:
               with:
                   name: ${{ matrix.os }}-release
 
-            - name: Run executable on Linux
-              if: matrix.os == 'ubuntu-latest'
+            - name: Run executable on Linux (Not yet supported by iced)
+              if: matrix.os == 'ubuntu-latest' && false
               run: |
                 chmod +x tiny_hacking_puzzle
                 xvfb-run -a ./tiny_hacking_puzzle &
