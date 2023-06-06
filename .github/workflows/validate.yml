@@ -51,7 +51,7 @@ jobs:
             - name: Collect Artifacts
               run: |
                 mkdir artifacts
-                cp target/release/very_secure_authentication_system* artifacts
+                cp target/release/vsas* artifacts
 
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
@@ -74,14 +74,14 @@ jobs:
             - name: Run executable on Linux (Not yet supported by iced)
               if: matrix.os == 'ubuntu-latest' && false
               run: |
-                chmod +x very_secure_authentication_system
-                xvfb-run -a ./very_secure_authentication_system &
+                chmod +x vsas
+                xvfb-run -a ./vsas &
                 sleep 5
                 killall $!
 
             - name: Run executable on Windows
               if: matrix.os == 'windows-latest'
               run: |
-                .\very_secure_authentication_system.exe &
+                .\vsas.exe &
                 sleep 5
-                taskkill /IM very_secure_authentication_system.exe /F
+                taskkill /IM vsas.exe /F

@@ -1,1 +1,1 @@
-The sqlite_master table contains a row called "name", and one called "sql". Both are of type TEXT, but the latter can take the value NULL.
+The password field allows only digits as inputs.

