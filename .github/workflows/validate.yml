@@ -51,7 +51,7 @@ jobs:
             - name: Collect Artifacts
               run: |
                 mkdir artifacts
-                cp target/release/tiny_hacking_puzzle* artifacts
+                cp target/release/very_secure_authentication_system* artifacts
 
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
@@ -74,14 +74,14 @@ jobs:
             - name: Run executable on Linux (Not yet supported by iced)
               if: matrix.os == 'ubuntu-latest' && false
               run: |
-                chmod +x tiny_hacking_puzzle
-                xvfb-run -a ./tiny_hacking_puzzle &
+                chmod +x very_secure_authentication_system
+                xvfb-run -a ./very_secure_authentication_system &
                 sleep 5
                 killall $!
 
             - name: Run executable on Windows
               if: matrix.os == 'windows-latest'
               run: |
-                .\tiny_hacking_puzzle.exe &
+                .\very_secure_authentication_system.exe &
                 sleep 5
-                taskkill /IM tiny_hacking_puzzle.exe /F
+                taskkill /IM tiny_hackvery_secure_authentication_systeming_puzzle.exe /F

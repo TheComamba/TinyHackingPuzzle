@@ -7,15 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'tiny_hacking_puzzle'",
+            "name": "Debug executable 'very_secure_authentication_system'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=tiny_hacking_puzzle",
-                    "--package=tiny_hacking_puzzle"
+                    "--bin=very_secure_authentication_system",
+                    "--package=very_secure_authentication_system"
                 ],
                 "filter": {
-                    "name": "tiny_hacking_puzzle",
+                    "name": "very_secure_authentication_system",
                     "kind": "bin"
                 }
             },
