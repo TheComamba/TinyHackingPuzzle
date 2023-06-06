@@ -84,4 +84,4 @@ jobs:
               run: |
                 .\very_secure_authentication_system.exe &
                 sleep 5
-                taskkill /IM tiny_hackvery_secure_authentication_systeming_puzzle.exe /F
+                taskkill /IM very_secure_authentication_system.exe /F
