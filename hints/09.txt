@@ -1,2 +1,0 @@
-The python command for getting the SHA256 hash of a string is
-hashlib.sha256(some_password.encode('UTF-8')).hexdigest()

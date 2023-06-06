@@ -1,3 +1,2 @@
 The database that stores the users is accessed via sqlcipher, which uses sqlite.
-The metatable that stores information about the database and its tables is called "sqlite_master".
 Most languages encode strings in UTF-8.

@@ -1,3 +1,2 @@
-To get all the information of all tables, input
-' UNION SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND sql LIKE '
-And then think about what the complete query looks like.
+The python command for getting the SHA256 hash of a string is
+hashlib.sha256(some_password.encode('UTF-8')).hexdigest()
