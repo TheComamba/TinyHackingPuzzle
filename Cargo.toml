@@ -1,5 +1,5 @@
 [package]
-name = "very_secure_authentication_system"
+name = "vsas"
 version = "0.1.0"
 edition = "2021"
 

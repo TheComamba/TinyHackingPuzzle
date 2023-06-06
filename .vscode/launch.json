@@ -7,15 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'very_secure_authentication_system'",
+            "name": "Debug executable 'vsas'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=very_secure_authentication_system",
-                    "--package=very_secure_authentication_system"
+                    "--bin=vsas",
+                    "--package=vsas"
                 ],
                 "filter": {
-                    "name": "very_secure_authentication_system",
+                    "name": "vsas",
                     "kind": "bin"
                 }
             },

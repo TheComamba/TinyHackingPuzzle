@@ -21,7 +21,7 @@ impl Sandbox for Gui {
     }
 
     fn title(&self) -> String {
-        String::from("Very secure authentication system")
+        String::from("VSAS - Very secure authentication system")
     }
 
     fn update(&mut self, message: Self::Message) {
