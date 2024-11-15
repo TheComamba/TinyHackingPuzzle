@@ -1,5 +1,5 @@
 use iced::widget::{Button, Column, Text, TextInput};
-use iced::{Element, Sandbox};
+use iced::Element;
 
 use crate::sql::{check_user, search_for_users};
 
@@ -9,33 +9,28 @@ pub(crate) struct Gui {
     message: String,
 }
 
-impl Sandbox for Gui {
-    type Message = GuiMessage;
-
-    fn new() -> Self {
+impl Default for Gui {
+    fn default() -> Self {
         Gui {
             user: String::new(),
             password: String::new(),
             message: String::new(),
         }
     }
+}
 
-    fn title(&self) -> String {
-        String::from("VSAS - Very secure authentication system")
-    }
-
-    fn update(&mut self, message: Self::Message) {
+impl Gui {
+    pub(crate) fn update(&mut self, message: GuiMessage) {
         match message {
             GuiMessage::UserInput(user) => self.user = user,
             GuiMessage::PasswordInput(password) => self.set_password_input(password),
             GuiMessage::Login => self.validate_login(),
             GuiMessage::AddUser => self.add_user(),
             GuiMessage::SearchForUser => self.search_for_users(),
-            GuiMessage::UpdateMessageBox(_) => (),
         }
     }
 
-    fn view(&self) -> Element<Self::Message> {
+    pub(crate) fn view(&self) -> Element<GuiMessage> {
         Column::new()
             .push(Text::new("User:"))
             .push(
@@ -56,17 +51,12 @@ impl Sandbox for Gui {
             .push(Button::new(Text::new("Search for users")).on_press(GuiMessage::SearchForUser))
             .push(Button::new(Text::new("Add user")).on_press(GuiMessage::AddUser))
             .push(Button::new(Text::new("Login")).on_press(GuiMessage::Login))
-            .push(
-                TextInput::new("Output Message", &self.message)
-                    .on_input(GuiMessage::UpdateMessageBox),
-            )
+            .push(TextInput::new("Output Message", &self.message))
             .padding(30)
             .spacing(15)
             .into()
     }
-}
 
-impl Gui {
     fn set_password_input(&mut self, pw: String) {
         if pw.chars().any(|c| !c.is_digit(10)) {
             self.message = String::from("Password must only contain digits");
@@ -118,5 +108,4 @@ pub(crate) enum GuiMessage {
     Login,
     AddUser,
     SearchForUser,
-    UpdateMessageBox(String),
 }

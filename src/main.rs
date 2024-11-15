@@ -1,9 +1,13 @@
 use gui::Gui;
-use iced::{Sandbox, Settings};
 
 mod gui;
 mod sql;
 
-fn main() {
-    Gui::run(Settings::default()).unwrap();
+fn main() -> Result<(), iced::Error> {
+    iced::application(
+        "VSAS - Very secure authentication system",
+        Gui::update,
+        Gui::view,
+    )
+    .run()
 }
